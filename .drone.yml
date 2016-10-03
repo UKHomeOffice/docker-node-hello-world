@@ -34,6 +34,16 @@ pipeline:
       branch: master
       event: push
 
+  pr-builder:
+    privileged: true
+    image: docker:1.11
+    environment:
+      - DOCKER_HOST=tcp://127.0.0.1:2375
+    commands:
+      - docker build -t node-hello-world .
+    when:
+      event: pull_request
+
 services:
   dind:
     image: docker:1.11-dind
