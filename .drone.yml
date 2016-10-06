@@ -47,20 +47,16 @@ pipeline:
 
   deploy-to-prod:
     image: busybox
-    environment:
-      - DOCKER_HOST=tcp://127.0.0.1:2375
     commands:
-      - docker run --rm busybox /bin/echo hello prod
+      - /bin/echo hello prod
     when:
       environment: production
       event: deployment
 
   deploy-to-uat:
     image: busybox
-    environment:
-      - DOCKER_HOST=tcp://127.0.0.1:2375
     commands:
-      - docker run --rm busybox /bin/echo hello uat
+      - /bin/echo hello uat
     when:
       environment: uat
       event: deployment
