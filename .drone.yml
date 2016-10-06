@@ -11,29 +11,29 @@ pipeline:
       branch: master
       event: push
 
-#   image_to_quay:
-#     image: docker:1.11
-#     environment:
-#       - DOCKER_HOST=tcp://127.0.0.1:2375
-#     commands:
-#       - docker login -u="ukhomeofficedigital+drone_demo" -p=${DOCKER_PASSWORD} quay.io
-#       - docker tag node-hello-world quay.io/ukhomeofficedigital/node-hello-world:${DRONE_COMMIT_SHA}
-#       - docker push quay.io/ukhomeofficedigital/node-hello-world:${DRONE_COMMIT_SHA}
-#     when:
-#       branch: master
-#       event: push
+  image_to_quay:
+    image: docker:1.11
+    environment:
+      - DOCKER_HOST=tcp://127.0.0.1:2375
+    commands:
+      - docker login -u="ukhomeofficedigital+drone_demo" -p=${DOCKER_PASSWORD} quay.io
+      - docker tag node-hello-world quay.io/ukhomeofficedigital/node-hello-world:${DRONE_COMMIT_SHA}
+      - docker push quay.io/ukhomeofficedigital/node-hello-world:${DRONE_COMMIT_SHA}
+    when:
+      branch: master
+      event: push
 
-#   image_to_artifactory:
-#     image: docker:1.11
-#     environment:
-#       - DOCKER_HOST=tcp://127.0.0.1:2375
-#     commands:
-#       - docker login -u="regt-build-bot" -p=${DOCKER_ARTIFACTORY_PASSWORD} docker.digital.homeoffice.gov.uk
-#       - docker tag node-hello-world docker.digital.homeoffice.gov.uk/ukhomeofficedigital/node-hello-world:${DRONE_COMMIT_SHA}
-#       - docker push docker.digital.homeoffice.gov.uk/ukhomeofficedigital/node-hello-world:${DRONE_COMMIT_SHA}
-#     when:
-#       branch: master
-#       event: push
+  image_to_artifactory:
+    image: docker:1.11
+    environment:
+      - DOCKER_HOST=tcp://127.0.0.1:2375
+    commands:
+      - docker login -u="regt-build-bot" -p=${DOCKER_ARTIFACTORY_PASSWORD} docker.digital.homeoffice.gov.uk
+      - docker tag node-hello-world docker.digital.homeoffice.gov.uk/ukhomeofficedigital/node-hello-world:${DRONE_COMMIT_SHA}
+      - docker push docker.digital.homeoffice.gov.uk/ukhomeofficedigital/node-hello-world:${DRONE_COMMIT_SHA}
+    when:
+      branch: master
+      event: push
 
   pr-builder:
     privileged: true
@@ -45,12 +45,37 @@ pipeline:
     when:
       event: pull_request
 
+  deploy-to-prod:
+    image: busybox
+    commands:
+      - /bin/echo hello prod
+    when:
+      environment: production
+      event: deployment
+
   deploy:
     image: busybox
     commands:
       - /bin/echo hello ${ENV_NAME}
     when:
+      environment: uat
       event: deployment
+
+  first-step:
+    image: busybox
+    commands:
+      - echo hello > test.txt
+    when:
+      branch: master
+      event: push
+
+  second-step:
+    image: busybox
+    commands:
+      - cat test.txt
+    when:
+      branch: master
+      event: push
 
 services:
   dind:
