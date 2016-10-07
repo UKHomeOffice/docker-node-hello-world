@@ -77,6 +77,17 @@ pipeline:
       branch: master
       event: push
 
+  trigger_deploy:
+    image: quay.io/ukhomeofficedigital/drone-trigger:latest
+    drone_server: https://drone.digital.homeoffice.gov.uk
+    repo: UKHomeOffice/kube-node-hello-world
+    branch: master
+    deploy_to: dev-induction
+    params: HELLO_WORLD_NODE_IMAGE_TAG=${DRONE_COMMIT_SHA}
+    when:
+      branch: master
+      event: push
+
 services:
   dind:
     image: docker:1.11-dind
@@ -84,3 +95,4 @@ services:
     command:
       - "-s"
       - "overlay"
+
