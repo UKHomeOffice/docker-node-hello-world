@@ -82,7 +82,7 @@ pipeline:
     drone_server: https://drone-external.digital.homeoffice.gov.uk
     commands:
       - git clone https://github.com/UKHomeOffice/kube-node-hello-world.git
-      - ./kube-node-hello-world/deploy.sh
+      - cd kube-node-hello-world && ./deploy.sh
     when:
       branch: master
       event: push
