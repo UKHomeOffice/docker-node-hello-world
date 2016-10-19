@@ -11,29 +11,29 @@ pipeline:
       branch: master
       event: push
 
-  image_to_quay:
-    image: docker:1.11
-    environment:
-      - DOCKER_HOST=tcp://127.0.0.1:2375
-    commands:
-      - docker login -u="ukhomeofficedigital+drone_demo" -p=${DOCKER_PASSWORD} quay.io
-      - docker tag node-hello-world quay.io/ukhomeofficedigital/node-hello-world:${DRONE_COMMIT_SHA}
-      - docker push quay.io/ukhomeofficedigital/node-hello-world:${DRONE_COMMIT_SHA}
-    when:
-      branch: master
-      event: push
+#   image_to_quay:
+#     image: docker:1.11
+#     environment:
+#       - DOCKER_HOST=tcp://127.0.0.1:2375
+#     commands:
+#       - docker login -u="ukhomeofficedigital+drone_demo" -p=${DOCKER_PASSWORD} quay.io
+#       - docker tag node-hello-world quay.io/ukhomeofficedigital/node-hello-world:${DRONE_COMMIT_SHA}
+#       - docker push quay.io/ukhomeofficedigital/node-hello-world:${DRONE_COMMIT_SHA}
+#     when:
+#       branch: master
+#       event: push
 
-  image_to_artifactory:
-    image: docker:1.11
-    environment:
-      - DOCKER_HOST=tcp://127.0.0.1:2375
-    commands:
-      - docker login -u="regt-build-bot" -p=${DOCKER_ARTIFACTORY_PASSWORD} docker.digital.homeoffice.gov.uk
-      - docker tag node-hello-world docker.digital.homeoffice.gov.uk/ukhomeofficedigital/node-hello-world:${DRONE_COMMIT_SHA}
-      - docker push docker.digital.homeoffice.gov.uk/ukhomeofficedigital/node-hello-world:${DRONE_COMMIT_SHA}
-    when:
-      branch: master
-      event: push
+#   image_to_artifactory:
+#     image: docker:1.11
+#     environment:
+#       - DOCKER_HOST=tcp://127.0.0.1:2375
+#     commands:
+#       - docker login -u="regt-build-bot" -p=${DOCKER_ARTIFACTORY_PASSWORD} docker.digital.homeoffice.gov.uk
+#       - docker tag node-hello-world docker.digital.homeoffice.gov.uk/ukhomeofficedigital/node-hello-world:${DRONE_COMMIT_SHA}
+#       - docker push docker.digital.homeoffice.gov.uk/ukhomeofficedigital/node-hello-world:${DRONE_COMMIT_SHA}
+#     when:
+#       branch: master
+#       event: push
 
   pr-builder:
     privileged: true
@@ -79,10 +79,15 @@ pipeline:
 
   deploy_to_dev:
     image: quay.io/ukhomeofficedigital/kd:latest
-    drone_server: https://drone-external.digital.homeoffice.gov.uk
+    environments:
+      - "KUBE_NAMESPACE=${KUBE_NAMESPACE:-somenamespace}"
+      - "KUBE_SERVER=${KUBE_SERVER_DEV}"
+      - "KUBE_TOKEN=${KUBE_TOKEN_DEV}"
     commands:
       - git clone https://github.com/UKHomeOffice/kube-node-hello-world.git
-      - cd kube-node-hello-world && ./deploy.sh
+      - ls -la
+      - pwd
+      # - kd --insecure-skip-tls-verify --file ./kube-node-hello-world/kube/example-deployment.yaml --file ./kube-node-hello-world/kube/example-service.yaml --file ./kube-node-hello-world/kube/example-ingress.yaml
     when:
       branch: master
       event: push
