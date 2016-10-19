@@ -11,17 +11,17 @@ pipeline:
       branch: master
       event: push
 
-#   image_to_quay:
-#     image: docker:1.11
-#     environment:
-#       - DOCKER_HOST=tcp://127.0.0.1:2375
-#     commands:
-#       - docker login -u="ukhomeofficedigital+drone_demo" -p=${DOCKER_PASSWORD} quay.io
-#       - docker tag node-hello-world quay.io/ukhomeofficedigital/node-hello-world:${DRONE_COMMIT_SHA}
-#       - docker push quay.io/ukhomeofficedigital/node-hello-world:${DRONE_COMMIT_SHA}
-#     when:
-#       branch: master
-#       event: push
+  image_to_quay:
+    image: docker:1.11
+    environment:
+      - DOCKER_HOST=tcp://127.0.0.1:2375
+    commands:
+      - docker login -u="ukhomeofficedigital+drone_demo" -p=${DOCKER_PASSWORD} quay.io
+      - docker tag node-hello-world quay.io/ukhomeofficedigital/node-hello-world:${DRONE_COMMIT_SHA}
+      - docker push quay.io/ukhomeofficedigital/node-hello-world:${DRONE_COMMIT_SHA}
+    when:
+      branch: master
+      event: push
 
 #   image_to_artifactory:
 #     image: docker:1.11
@@ -83,6 +83,7 @@ pipeline:
       - "KUBE_NAMESPACE=${KUBE_NAMESPACE:-dev-induction}"
       - "KUBE_SERVER=${KUBE_SERVER_DEV}"
       - "KUBE_TOKEN=${KUBE_TOKEN_DEV}"
+      - "HELLO_WORLD_NODE_IMAGE_TAG=${DRONE_COMMIT_SHA}"
     commands:
       - apk update && apk add git
       - git clone https://github.com/UKHomeOffice/kube-node-hello-world.git
