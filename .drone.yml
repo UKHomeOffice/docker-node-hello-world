@@ -77,13 +77,12 @@ pipeline:
       branch: master
       event: push
 
-  trigger_deploy:
-    image: quay.io/ukhomeofficedigital/drone-trigger:latest
-    drone_server: https://drone.digital.homeoffice.gov.uk
-    repo: UKHomeOffice/kube-node-hello-world
-    branch: master
-    deploy_to: dev-induction
-    params: HELLO_WORLD_NODE_IMAGE_TAG=${DRONE_COMMIT_SHA}
+  deploy_to_dev:
+    image: quay.io/ukhomeofficedigital/kd:latest
+    drone_server: https://drone-external.digital.homeoffice.gov.uk
+    commands:
+      - git clone https://github.com/UKHomeOffice/kube-node-hello-world.git
+      - ./kube-node-hello-world/deploy.sh
     when:
       branch: master
       event: push
