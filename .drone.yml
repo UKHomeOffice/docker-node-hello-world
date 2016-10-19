@@ -87,7 +87,6 @@ pipeline:
       - git clone https://github.com/UKHomeOffice/kube-node-hello-world.git
       - ls -la
       - pwd
-      # - kd --insecure-skip-tls-verify --file ./kube-node-hello-world/kube/example-deployment.yaml --file ./kube-node-hello-world/kube/example-service.yaml --file ./kube-node-hello-world/kube/example-ingress.yaml
     when:
       branch: master
       event: push
