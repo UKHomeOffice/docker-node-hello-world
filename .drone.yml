@@ -79,7 +79,6 @@ pipeline:
 
   deploy_to_dev:
     image: quay.io/ukhomeofficedigital/kd:v0.2.2
-    drone_server: https://drone-external.digital.homeoffice.gov.uk
     environment:
       - "KUBE_NAMESPACE=${KUBE_NAMESPACE:-somenamespace}"
       - "KUBE_SERVER=${KUBE_SERVER_DEV}"
