@@ -1,5 +1,6 @@
 # Docker + Node "Hello World" Example
 
+
 This repository gives you a quick introduction to getting docker running with Node. It is intended for the Docker beginner.
 
 You can adapt the same approach to other languages but I chose Node because it's what I use most often.
