@@ -89,7 +89,7 @@ pipeline:
     image: plugins/git
     environment:
       - DRONE_REMOTE_URL=https://github.com/UKHomeOffice/kube-node-hello-world.git
-    path: ./github.com/UKHomeOffice/docker-node-hello-world/kube-node-hello-world
+      - DRONE_WORKSPACE=/drone/src/github.com/UKHomeOffice/docker-node-hello-world/kube-node-hello-world1
 
   deploy_to_dev:
     image: quay.io/ukhomeofficedigital/kd:v0.2.2
