@@ -85,13 +85,18 @@ pipeline:
       branch: master
       event: push
 
+  predeploy_to_dev:
+    image: plugins/git
+    environment:
+      - DRONE_REMOTE_URL=https://github.com/UKHomeOffice/kube-node-hello-world.git
+
   deploy_to_dev:
     image: quay.io/ukhomeofficedigital/kd:v0.2.2
     environment:
       - KUBE_NAMESPACE=dev-induction
     commands:
-      - apk update && apk add git
-      - git clone https://github.com/UKHomeOffice/kube-node-hello-world.git
+      # - apk update && apk add git
+      # - git clone https://github.com/UKHomeOffice/kube-node-hello-world.git
       - cd kube-node-hello-world
       - ./deploy.sh
     when:
