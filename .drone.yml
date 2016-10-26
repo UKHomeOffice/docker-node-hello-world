@@ -86,9 +86,8 @@ pipeline:
       event: push
 
   predeploy_to_uat:
-    image: gliderlabs/alpine:3.4
+    image: plugin/git
     commands:
-      - apk update && apk add git
       - git clone https://${GITHUB_TOKEN}:x-oauth-basic@github.com/UKHomeOffice/kube-node-hello-world.git
 
   deploy_to_uat:
