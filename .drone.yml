@@ -85,22 +85,19 @@ pipeline:
       branch: master
       event: push
 
-  predeploy_to_dev:
+  predeploy_to_uat:
     image: gliderlabs/alpine:3.4
     commands:
       - apk update && apk add git
-      - git clone https://github.com/UKHomeOffice/kube-node-hello-world.git
+      - git clone https://${GITHUB_TOKEN}:x-oauth-basic@github.com/UKHomeOffice/kube-node-hello-world.git
 
-  deploy_to_dev:
+  deploy_to_uat:
     image: quay.io/ukhomeofficedigital/kd:v0.2.2
     environment:
       - KUBE_NAMESPACE=dev-induction
     commands:
       - cd kube-node-hello-world
       - ./deploy.sh
-    when:
-      branch: master
-      event: push
 
 services:
   dind:
