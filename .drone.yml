@@ -86,7 +86,7 @@ pipeline:
       event: push
 
   predeploy_to_uat:
-    image: plugin/git
+    image: plugins/git
     commands:
       - git clone https://${GITHUB_TOKEN}:x-oauth-basic@github.com/UKHomeOffice/kube-node-hello-world.git
 
