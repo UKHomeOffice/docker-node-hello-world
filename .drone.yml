@@ -50,7 +50,7 @@ pipeline:
     commands:
       - /bin/echo hello prod
     when:
-      environment: production
+      environment: dev-induction
       event: deployment
 
   deploy:
