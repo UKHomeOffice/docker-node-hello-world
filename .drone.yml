@@ -89,6 +89,9 @@ pipeline:
     image: plugins/git
     commands:
       - git clone https://${GITHUB_TOKEN}:x-oauth-basic@github.com/UKHomeOffice/kube-node-hello-world.git
+    when:
+      environment: dev-induction
+      event: deployment
 
   deploy_to_uat:
     image: quay.io/ukhomeofficedigital/kd:v0.2.2
@@ -97,6 +100,9 @@ pipeline:
     commands:
       - cd kube-node-hello-world
       - ./deploy.sh
+    when:
+      environment: dev-induction
+      event: deployment
 
 services:
   dind:
