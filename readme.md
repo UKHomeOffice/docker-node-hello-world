@@ -1,4 +1,4 @@
-# Docker + Node "Hello World" Example
+# Drone + Docker + Node "Hello World" Example
 
 
 This repository gives you a quick introduction to getting docker running with Node. It is intended for the Docker beginner.
@@ -33,16 +33,3 @@ First, checkout this project locally and then follow these steps:
 - List all local images: `docker images`
 - Remove an image: `docker rmi <image-id>`
 - Remove a container: `docker rm <container-id>`
-
-
-## Further Reading
-
-- Checkout [Tutum](http://tutum.co) for hosting private docker registries and managing your infrastructure.
-  - Check out the [Tutum CLI](https://github.com/tutumcloud/cli): `brew install tutum`
-- Check out this [Docker + Tutum hello world repo](https://github.com/tutumcloud/hello-world)
-
-
-## Credits and License
-
-Put together by [Dana Woodman](mailto:dana@danawoodman.com) and released under the MIT license. Have fun!
-
