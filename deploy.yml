@@ -1,0 +1,19 @@
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: induction-hello-world
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        name: induction-hello-world
+    spec:
+      containers:
+      - name: hello-world-nodejs
+        image: hello-world-nodejs
+        imagePullPolicy: IfNotPresent
+        ports:
+          - containerPort: 4000
+            name: http-pods
