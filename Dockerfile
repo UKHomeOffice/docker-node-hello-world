@@ -1,4 +1,4 @@
-FROM quay.io/ukhomeofficedigital/nodejs-base:v6.9.1
+FROM node:6-alpine
 WORKDIR /src
 COPY . .
 RUN npm install && npm test
