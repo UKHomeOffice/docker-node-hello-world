@@ -4,7 +4,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    image: hello-world
+    image: node-hello-world
     ports:
       - "3000:4000"
     depends_on:

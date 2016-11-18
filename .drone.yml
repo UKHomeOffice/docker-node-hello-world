@@ -104,6 +104,32 @@ pipeline:
       environment: dev-induction
       event: deployment
 
+
+
+  my-docker-compose:
+    privileged: true
+    image: docker:1.11
+    environment:
+      - DOCKER_HOST=tcp://127.0.0.1:2375
+    commands:
+      - docker-compose build
+    when:
+      environment: compose
+      event: deployment
+
+  image_to_quay:
+    image: docker:1.11
+    environment:
+      - DOCKER_HOST=tcp://127.0.0.1:2375
+    commands:
+      - docker login -u="ukhomeofficedigital+drone_demo" -p=${DOCKER_PASSWORD} quay.io
+      - docker tag node-hello-world quay.io/ukhomeofficedigital/node-hello-world:${DRONE_COMMIT_SHA}
+      - docker push quay.io/ukhomeofficedigital/node-hello-world:${DRONE_COMMIT_SHA}
+    when:
+      environment: compose
+      event: deployment
+
+
 services:
   dind:
     image: docker:1.11-dind
