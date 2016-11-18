@@ -122,9 +122,7 @@ pipeline:
     environment:
       - DOCKER_HOST=tcp://127.0.0.1:2375
     commands:
-      - docker-compose up -d
-      - docker-compose exec -T web npm run ci
-      - docker-compose stop
+      - docker-compose up -d && docker-compose exec -T web npm run ci && docker-compose stop
     when:
       environment: compose
       event: deployment
