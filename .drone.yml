@@ -117,6 +117,18 @@ pipeline:
       environment: compose
       event: deployment
 
+  integration_tests:
+    image: docker/compose:1.9.0
+    environment:
+      - DOCKER_HOST=tcp://127.0.0.1:2375
+    commands:
+      - docker-compose up -d
+      - docker-compose exec web npm run ci
+      - docker-compose stop
+    when:
+      environment: compose
+      event: deployment
+
   image_to_quay:
     image: docker:1.11
     environment:

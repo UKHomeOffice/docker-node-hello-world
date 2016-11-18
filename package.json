@@ -5,7 +5,8 @@
   "main": "server.js",
   "scripts": {
     "test": "mocha ./test/unit",
-    "start": "node server.js"
+    "start": "node server.js",
+    "ci": "mocha ./test/int"
   },
   "license": "MIT",
   "dependencies": {

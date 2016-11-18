@@ -1,7 +1,7 @@
 const express = require('express')
-const mysql = require('mysql')
 const port = 4000
 const app = express()
+const Db = require('./db');
 
 app.listen(port)
 
@@ -14,14 +14,13 @@ app.get('/', (req, res) => {
 })
 
 app.get('/table', (req, res) => {
-  var connection = mysql.createConnection({
+  var connection = Db({
     host: process.env.DBHOST,
     user: process.env.DBUSER,
     password: process.env.DBPASS,
     database: process.env.DBNAME,
   })
   var response = '<html><body>'
-  connection.connect(err => (!!err) ? console.log('err: ', err) : undefined);
   connection.query("CREATE TABLE IF NOT EXISTS mydates (date DATETIME DEFAULT CURRENT_TIMESTAMP)", () =>
     connection.query("INSERT INTO mydates VALUES()", () =>
       connection.query("SELECT * FROM mydates ORDER BY DATE DESC;")
@@ -30,5 +29,5 @@ app.get('/table', (req, res) => {
         .on('result', row => response += `<tr><td>${row.date}</td></tr>`)
         .on('end', () => res.send(`${response}</body></html>`))
     )
-  )
-})
+  );
+});
