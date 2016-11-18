@@ -1,0 +1,28 @@
+version: '2'
+services:
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: hello-world
+    ports:
+      - "3000:4000"
+    depends_on:
+      - mysql-server
+    environment:
+      DBNAME: hello
+      DBHOST: mysql-server
+      DBUSER: hello
+      DBPASS: world
+    # volumes:
+    #   - /home/user/webdev/drupal-test/htmlroot:/var/www/html
+  mysql-server:
+    image: mysql
+    environment:
+      MYSQL_DATABASE: hello
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_USER: hello
+      MYSQL_PASSWORD: world
+    # volumes:
+    #   - /home/user/webdev/drupal-test/mysql:/var/lib/mysql
+

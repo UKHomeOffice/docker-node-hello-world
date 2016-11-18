@@ -21,11 +21,11 @@ app.get('/table', (req, res) => {
     database: process.env.DBNAME,
   })
   var response = '<html><body>'
-  connection.connect()
+  connection.connect(err => (!!err) ? console.log('err: ', err) : undefined);
   connection.query("CREATE TABLE IF NOT EXISTS mydates (date DATETIME DEFAULT CURRENT_TIMESTAMP)", () =>
     connection.query("INSERT INTO mydates VALUES()", () =>
       connection.query("SELECT * FROM mydates ORDER BY DATE DESC;")
-        .on('error', err => response += 'ERROR')
+        .on('error', err => response += `ERROR ${err}`)
         .on('fields', () => response += '<table><th><td>dates</td></th>')
         .on('result', row => response += `<tr><td>${row.date}</td></tr>`)
         .on('end', () => res.send(`${response}</body></html>`))
