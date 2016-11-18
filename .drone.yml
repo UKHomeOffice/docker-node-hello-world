@@ -108,7 +108,7 @@ pipeline:
 
   my-docker-compose:
     privileged: true
-    image: docker:1.11
+    image: docker/compose
     environment:
       - DOCKER_HOST=tcp://127.0.0.1:2375
     commands:
