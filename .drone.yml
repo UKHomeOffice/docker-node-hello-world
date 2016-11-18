@@ -108,7 +108,7 @@ pipeline:
 
   my-docker-compose:
     privileged: true
-    image: docker/compose:1.9.0
+    image: docker/compose:1.8.1
     environment:
       - DOCKER_HOST=tcp://127.0.0.1:2375
     commands:
@@ -118,7 +118,7 @@ pipeline:
       event: deployment
 
   integration_tests:
-    image: docker/compose:1.9.0
+    image: docker/compose:1.8.1
     environment:
       - DOCKER_HOST=tcp://127.0.0.1:2375
     commands:
