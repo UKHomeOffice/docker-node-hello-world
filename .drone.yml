@@ -149,6 +149,11 @@ pipeline:
     environment:
       - DOCKER_HOST=tcp://127.0.0.1:2375
     commands:
+      - mkdir -p /var/lib/kubelet
+      - wget https://github.com/kubernetes/kubernetes/releases/download/v1.4.6/kubernetes.tar.gz
+      - tar -xvf kubernetes.tar.gz
+      - tar -xvf kubernetes/server/kubernetes-server-linux-amd64.tar.gz
+      - cp kubernetes/server/bin/kubelet /var/lib/kubelet/
       - docker run -d --volume=/sys:/sys:rw --volume=/var/lib/docker/:/var/lib/docker:rw --volume=/var/lib/kubelet/:/var/lib/kubelet:rw,shared --volume=/var/run:/var/run:rw --net=host --pid=host --privileged --name=kubelet gcr.io/google_containers/hyperkube-amd64:v1.4.6 /hyperkube kubelet --hostname-override=127.0.0.1 --api-servers=http://localhost:8080 --config=/etc/kubernetes/manifests --cluster-dns=10.0.0.10 --cluster-domain=cluster.local --allow-privileged --v=2
     when:
       environment: kubernetes
