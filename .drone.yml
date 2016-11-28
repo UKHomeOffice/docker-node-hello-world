@@ -85,6 +85,26 @@ pipeline:
       branch: master
       event: push
 
+  predeploy_to_ci:
+    image: plugins/git
+    commands:
+      - git clone https://github.com/UKHomeOffice/kube-node-hello-world.git
+    when:
+      branch: master
+      event: push
+
+  deploy_to_ci:
+    image: quay.io/ukhomeofficedigital/kd:v0.2.2
+    environment:
+    commands:
+      - kubectl create namespace ${DRONE_COMMIT_SHA}
+      - cd kube-node-hello-world
+      - KUBE_NAMESPACE=${DRONE_COMMIT_SHA} KUBE_SERVER=${KUBE_SERVER_CI} ./deploy.sh
+      - kubectl delete namespace ${DRONE_COMMIT_SHA}
+    when:
+      branch: master
+      event: push
+
   predeploy_to_uat:
     image: plugins/git
     commands:
