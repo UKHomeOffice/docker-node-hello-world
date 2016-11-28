@@ -97,10 +97,10 @@ pipeline:
     image: quay.io/ukhomeofficedigital/kd:v0.2.2
     environment:
     commands:
-      - kubectl create namespace ${DRONE_COMMIT_SHA} --server=${KUBE_SERVER_CI}
+      - kubectl create namespace ${DRONE_COMMIT_SHA} --server=${KUBE_SERVER_CI} --insecure-skip-tls-verify=true
       - cd kube-node-hello-world
       - KUBE_NAMESPACE=${DRONE_COMMIT_SHA} KUBE_SERVER=${KUBE_SERVER_CI} ./deploy.sh
-      - kubectl delete namespace ${DRONE_COMMIT_SHA} --server=${KUBE_SERVER_CI}
+      - kubectl delete namespace ${DRONE_COMMIT_SHA} --server=${KUBE_SERVER_CI} --insecure-skip-tls-verify=true
     when:
       branch: master
       event: push
