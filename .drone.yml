@@ -99,7 +99,7 @@ pipeline:
     commands:
       - kubectl create namespace ${DRONE_COMMIT_SHA} --server=${KUBE_SERVER_CI} --insecure-skip-tls-verify=true --token=${KUBE_TOKEN_CI}
       - cd kube-node-hello-world
-      - KUBE_NAMESPACE=${DRONE_COMMIT_SHA} KUBE_SERVER=${KUBE_SERVER_CI} ./deploy.sh
+      - KUBE_TOKEN=${KUBE_TOKEN_CI} KUBE_NAMESPACE=${DRONE_COMMIT_SHA} KUBE_SERVER=${KUBE_SERVER_CI} ./deploy.sh
       - kubectl delete namespace ${DRONE_COMMIT_SHA} --server=${KUBE_SERVER_CI} --insecure-skip-tls-verify=true --token=${KUBE_TOKEN_CI}
     when:
       branch: master
