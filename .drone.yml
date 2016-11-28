@@ -98,7 +98,7 @@ pipeline:
     environment:
     commands:
       - kubectl create namespace ${DRONE_COMMIT_SHA}-${DRONE_BUILD_NUMBER} --server=${KUBE_SERVER_CI} --insecure-skip-tls-verify=true --token=${KUBE_TOKEN_CI}
-      - kubectl --token=${KUBE_TOKEN_CI} --server=${KUBE_SERVER_CI} --namespace=${DRONE_COMMIT_SHA}-${DRONE_BUILD_NUMBER} create secret generic my-secrets --from-literal=mysupersecret=notsosecret --insecure-skip-tls-verify
+      - kubectl --token=${KUBE_TOKEN_CI} --server=${KUBE_SERVER_CI} --namespace=${DRONE_COMMIT_SHA}-${DRONE_BUILD_NUMBER} create secret generic my-secret --from-literal=mysupersecret=notsosecret --insecure-skip-tls-verify
       - cd kube-node-hello-world
       - KUBE_TOKEN=${KUBE_TOKEN_CI} KUBE_NAMESPACE=${DRONE_COMMIT_SHA}-${DRONE_BUILD_NUMBER} KUBE_SERVER=${KUBE_SERVER_CI} ./deploy.sh
       - kubectl delete namespace ${DRONE_COMMIT_SHA}-${DRONE_BUILD_NUMBER} --server=${KUBE_SERVER_CI} --insecure-skip-tls-verify=true --token=${KUBE_TOKEN_CI}
