@@ -97,11 +97,23 @@ pipeline:
     image: quay.io/ukhomeofficedigital/kd:v0.2.2
     environment:
     commands:
-      - kubectl create namespace ${DRONE_COMMIT_SHA}-${DRONE_BUILD_NUMBER} --server=${KUBE_SERVER_CI} --insecure-skip-tls-verify=true --token=${KUBE_TOKEN_CI}
-      - kubectl --token=${KUBE_TOKEN_CI} --server=${KUBE_SERVER_CI} --namespace=${DRONE_COMMIT_SHA}-${DRONE_BUILD_NUMBER} create secret generic my-secret --from-literal=mysupersecret=notsosecret --insecure-skip-tls-verify
-      - cd kube-node-hello-world
-      - KUBE_TOKEN=${KUBE_TOKEN_CI} KUBE_NAMESPACE=${DRONE_COMMIT_SHA}-${DRONE_BUILD_NUMBER} KUBE_SERVER=${KUBE_SERVER_CI} ./deploy.sh
-      - kubectl delete namespace ${DRONE_COMMIT_SHA}-${DRONE_BUILD_NUMBER} --server=${KUBE_SERVER_CI} --insecure-skip-tls-verify=true --token=${KUBE_TOKEN_CI}
+      - |
+        export KUBE_NAMESPACE=${DRONE_COMMIT_SHA}-${DRONE_BUILD_NUMBER}
+        export KUBE_SERVER=${KUBE_SERVER_CI}
+        export KUBE_TOKEN=${KUBE_TOKEN_CI}
+        export MY_SECRET=eW8=
+
+        kubectl create namespace ${KUBE_NAMESPACE} --server=${KUBE_SERVER} --insecure-skip-tls-verify=true --token=${KUBE_TOKEN}
+        cd kube-node-hello-world
+
+        cd kube
+        kd --insecure-skip-tls-verify \
+           --file example-secrets.yaml \
+           --file example-deployment.yaml \
+           --file example-service.yaml \
+           --file example-ingress.yaml
+
+        kubectl delete namespace ${KUBE_NAMESPACE} --server=${KUBE_SERVER} --insecure-skip-tls-verify=true --token=${KUBE_TOKEN}
     when:
       branch: master
       event: push
