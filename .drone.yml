@@ -103,6 +103,11 @@ pipeline:
         export KUBE_TOKEN=${KUBE_TOKEN_CI}
         export MY_SECRET=eW8=
 
+        echo $KUBE_NAMESPACE
+        echo $KUBE_SERVER
+        echo $KUBE_TOKEN
+        echo $MY_SECRET
+
         kubectl create namespace ${KUBE_NAMESPACE} --server=${KUBE_SERVER} --insecure-skip-tls-verify=true --token=${KUBE_TOKEN}
         cd kube-node-hello-world
 
