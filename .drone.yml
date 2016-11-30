@@ -94,14 +94,14 @@ pipeline:
       event: push
 
   deploy_to_ci:
-    image: quay.io/ukhomeofficedigital/kd:v0.2.2
+    image: quay.io/ukhomeofficedigital/kd:latest
     environment:
     commands:
       - |
         export KUBE_NAMESPACE=${DRONE_COMMIT_SHA}-${DRONE_BUILD_NUMBER}
         export KUBE_SERVER=${KUBE_SERVER_CI}
         export KUBE_TOKEN=${KUBE_TOKEN_CI}
-        export MY_SECRET="eW8="
+        export MY_SECRET=eW8=
 
         kubectl create namespace ${KUBE_NAMESPACE} --server=${KUBE_SERVER} --insecure-skip-tls-verify=true --token=${KUBE_TOKEN}
         cd kube-node-hello-world
