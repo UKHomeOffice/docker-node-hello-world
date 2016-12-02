@@ -112,12 +112,7 @@ pipeline:
         cd kube-node-hello-world
 
         cd kube
-        kd --insecure-skip-tls-verify \
-           --file example-secrets.yaml \
-           --file example-deployment.yaml \
-           --file example-service.yaml \
-           --file example-ingress.yaml \
-           --server=${KUBE_SERVER} --insecure-skip-tls-verify=true --token=${KUBE_TOKEN} --namespace=${KUBE_NAMESPACE}
+        kd --insecure-skip-tls-verify --file example-secrets.yaml --file example-deployment.yaml --file example-service.yaml --file example-ingress.yaml --server=${KUBE_SERVER} --insecure-skip-tls-verify=true --token=${KUBE_TOKEN} --namespace=${KUBE_NAMESPACE}
 
         kubectl delete namespace ${KUBE_NAMESPACE} --server=${KUBE_SERVER} --insecure-skip-tls-verify=true --token=${KUBE_TOKEN}
     when:
