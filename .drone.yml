@@ -103,21 +103,32 @@ pipeline:
         export KUBE_TOKEN=${KUBE_TOKEN_CI}
         export MY_SECRET=eW8=
 
-        echo $KUBE_NAMESPACE
-        echo $KUBE_SERVER
-        echo $KUBE_TOKEN
-        echo $MY_SECRET
-
         kubectl create namespace ${KUBE_NAMESPACE} --server=${KUBE_SERVER} --insecure-skip-tls-verify=true --token=${KUBE_TOKEN}
         cd kube-node-hello-world
 
         cd kube
-        kd --insecure-skip-tls-verify --file example-secrets.yaml --file example-deployment.yaml --file example-service.yaml --file example-ingress.yaml --kube-server=${KUBE_SERVER} --insecure-skip-tls-verify=true --kube-token=${KUBE_TOKEN} --namespace=${KUBE_NAMESPACE}
+        kd --insecure-skip-tls-verify \
+           --file example-secrets.yaml \
+           --file example-deployment.yaml \
+           --file example-service.yaml \
+           --file example-ingress.yaml \
+           --kube-server=${KUBE_SERVER} --insecure-skip-tls-verify=true --kube-token=${KUBE_TOKEN} --namespace=${KUBE_NAMESPACE}
+    when:
+      branch: master
+      event: push
 
+  notify:
+    image: quay.io/ukhomeofficedigital/kd:latest
+    commands:
+      - |
+        export KUBE_NAMESPACE=${DRONE_COMMIT_SHA}-${DRONE_BUILD_NUMBER}
+        export KUBE_SERVER=${KUBE_SERVER_CI}
+        export KUBE_TOKEN=${KUBE_TOKEN_CI}
         kubectl delete namespace ${KUBE_NAMESPACE} --server=${KUBE_SERVER} --insecure-skip-tls-verify=true --token=${KUBE_TOKEN}
     when:
       branch: master
       event: push
+      status: [ success, failure ]
 
   predeploy_to_uat:
     image: plugins/git
