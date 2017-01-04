@@ -95,7 +95,6 @@ pipeline:
 
   deploy_to_ci:
     image: quay.io/ukhomeofficedigital/kd:latest
-    environment:
     commands:
       - |
         export KUBE_NAMESPACE=${DRONE_COMMIT_SHA}-${DRONE_BUILD_NUMBER}
