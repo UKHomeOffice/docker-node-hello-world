@@ -105,6 +105,7 @@ pipeline:
         kubectl create namespace ${KUBE_NAMESPACE} --server=${KUBE_SERVER} --insecure-skip-tls-verify=true --token=${KUBE_TOKEN}
         cd kube-node-hello-world
 
+        exit 1
         cd kube
         kd --insecure-skip-tls-verify \
            --file example-secrets.yaml \
@@ -116,7 +117,7 @@ pipeline:
       branch: master
       event: push
 
-  notify:
+  cleanup:
     image: quay.io/ukhomeofficedigital/kd:latest
     commands:
       - |
