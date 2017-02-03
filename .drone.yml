@@ -121,24 +121,25 @@ pipeline:
     image: governmentpaas/curl-ssl
     commands:
       - |
+        sleep 10
         export KUBE_NAMESPACE=`cat namespace.txt`
         curl https://hello-world-service.${KUBE_NAMESPACE}.svc.cluster.local
     when:
       branch: master
       event: push
 
-  cleanup:
-    image: quay.io/ukhomeofficedigital/kd:latest
-    commands:
-      - |
-        export KUBE_NAMESPACE=`cat namespace.txt`
-        export KUBE_SERVER=${KUBE_SERVER_CI}
-        export KUBE_TOKEN=${KUBE_TOKEN_CI}
-        kubectl delete namespace ${KUBE_NAMESPACE} --insecure-skip-tls-verify=true --server=${KUBE_SERVER} --token=${KUBE_TOKEN}
-    when:
-      branch: master
-      event: push
-      status: [ success, failure ]
+  # cleanup:
+  #   image: quay.io/ukhomeofficedigital/kd:latest
+  #   commands:
+  #     - |
+  #       export KUBE_NAMESPACE=`cat namespace.txt`
+  #       export KUBE_SERVER=${KUBE_SERVER_CI}
+  #       export KUBE_TOKEN=${KUBE_TOKEN_CI}
+  #       kubectl delete namespace ${KUBE_NAMESPACE} --insecure-skip-tls-verify=true --server=${KUBE_SERVER} --token=${KUBE_TOKEN}
+  #   when:
+  #     branch: master
+  #     event: push
+  #     status: [ success, failure ]
 
   predeploy_to_uat:
     image: plugins/git
